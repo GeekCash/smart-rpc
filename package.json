@@ -1,0 +1,29 @@
+{
+  "name": "smart-rpc",
+  "version": "1.0.0",
+  "description": "A client library to connect to Multiple RPC in JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nasa8x/smart-rpc.git"
+  },
+  "keywords": [
+    "rpc"
+  ],
+  "author": "Nasa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nasa8x/smart-rpc/issues"
+  },
+  "homepage": "https://github.com/nasa8x/smart-rpc#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "loglevel": "^1.6.1",
+    "lru-cache": "^4.1.3",
+    "mix-hash": "^1.0.5",
+    "zmq": "^2.15.3"
+  }
+}
