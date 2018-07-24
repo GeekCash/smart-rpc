@@ -13,12 +13,12 @@
   "keywords": [
     "rpc"
   ],
-  "author": "Nasa",
+  "author": "GeekCash Team",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nasa8x/smart-rpc/issues"
+    "url": "https://github.com/geekcash/smart-rpc/issues"
   },
-  "homepage": "https://github.com/nasa8x/smart-rpc#readme",
+  "homepage": "https://github.com/geekcash/smart-rpc#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "loglevel": "^1.6.1",
