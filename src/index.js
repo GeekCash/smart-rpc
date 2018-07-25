@@ -2,7 +2,7 @@ var RPCClient = require('./lib'),
     util = require('util'),
     EventEmitter = require('events').EventEmitter;
 
-var SmartRPC = function () {
+function SmartRPC() {
     EventEmitter.call(this);
 };
 
@@ -43,7 +43,7 @@ SmartRPC.prototype = {
             });
 
 
-        }
+        };
 
     }
 };
