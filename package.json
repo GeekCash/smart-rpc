@@ -1,7 +1,7 @@
 {
   "name": "smart-rpc",
-  "version": "1.0.1",
-  "description": "A client library to connect to Multiple RPC in JavaScript.",
+  "version": "1.0.2",
+  "description": "Block and Transaction Real-Time Broadcasting in JavaScript.",
   "main": "./dist/index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --progress --watch --colors",
@@ -13,7 +13,11 @@
     "url": "git+https://github.com/geekcash/smart-rpc.git"
   },
   "keywords": [
-    "rpc"
+    "rpc",
+    "GeekCash",
+    "Dash",
+    "Blockchain",
+    "zeromq"
   ],
   "author": "GeekCash Team",
   "license": "MIT",
