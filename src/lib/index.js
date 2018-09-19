@@ -21,6 +21,15 @@ function RPCClient(option) {
 
     this.axios = axios.create(option.rpc);
 
+    this.axios.interceptors.response.use(function (response) {
+        // Do something with response data
+        //console.log(response);
+        return response && response.data ? response.data.result : null;
+    }, function (error) {
+        // Do something with response error
+        return Promise.reject({ error: error });
+    });
+
     this.init();
 
     if (option.listen) {
@@ -32,30 +41,21 @@ function RPCClient(option) {
 
 RPCClient.prototype = {
     init: function () {
-        log.enableAll();
-        var own = this;
+
+        // var own = this;
         for (let i = 0; i < this.apis.length; i++) {
             const a = this.apis[i];
-            this[a] = async function () {
+            this[a] = function () {
                 var params = [].slice.call(arguments);
-                return new Promise((resolve, reject) => {
-                    this.axios.request({
-                        data: {
-                            jsonrpc: '2.0',
-                            method: a.toLowerCase(),
-                            params: params,
-                            id: new Date().getTime()
-                        }
-                    }).catch(function (error) {
-                        //log.error('RPC-Client:', own.id, error);
-                        own.emit('error', error);
-                        reject({ error: error });
-                    }).then(function ({ data }) {
-                        resolve(data ? data.result : null);                      
-
-                    });
-
+                return this.axios.request({
+                    data: {
+                        jsonrpc: '2.0',
+                        method: a.toLowerCase(),
+                        params: params,
+                        id: new Date().getTime()
+                    }
                 });
+
             }
 
 
@@ -87,7 +87,7 @@ RPCClient.prototype = {
             }, 5000);
         });
 
-        // subcribe events 
+        // subscribe events 
         this.socket.subscribe('hashblock');
         this.socket.subscribe('rawtx');
         this.socket.subscribe('rawtxlock');
