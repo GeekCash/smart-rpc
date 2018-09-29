@@ -1,6 +1,6 @@
 {
   "name": "smart-rpc",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Block and Transaction Real-Time Broadcasting in JavaScript.",
   "main": "./dist/index.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "axios": "^0.18.0",
     "loglevel": "^1.6.1",
     "lru-cache": "^4.1.3",
+    "mix-dash": "^1.1.4",
     "mix-hash": "^1.0.5",
     "zmq": "^2.15.3"
   },

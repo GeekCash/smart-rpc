@@ -27,7 +27,7 @@ function RPCClient(option) {
         return response && response.data ? response.data.result : null;
     }, function (error) {
         // Do something with response error
-        return Promise.reject({ error: error });
+        return Promise.reject(error);
     });
 
     this.init();
@@ -53,7 +53,9 @@ RPCClient.prototype = {
                         method: a.toLowerCase(),
                         params: params,
                         id: new Date().getTime()
-                    }
+                    },
+                    maxContentLength: 50 * 1000 * 1000,
+                    timeout: 60000
                 });
 
             }

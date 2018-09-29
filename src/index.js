@@ -15,12 +15,21 @@ SmartRPC.prototype = {
         if (!Array.isArray(options)) options = [options];
 
         var own = this;
+
+        this.clients = [];
+
         for (let i = 0; i < options.length; i++) {
             var o = options[i];
             if (!o.id) {
                 throw new Error('option.id is required');
             }
             var client = this.create(Object.assign(o, { listen: 1 }));
+
+            this.clients.push(client);
+        };
+
+        for (let i = 0; i < this.clients.length; i++) {
+            const client = this.clients[i];
 
             client.on('error', function (error) {
                 own.emit('error', client, error);
@@ -41,9 +50,8 @@ SmartRPC.prototype = {
             client.on('tx', function (val) {
                 own.emit('tx', client, val);
             });
-
-
-        };
+            
+        }
 
     }
 };

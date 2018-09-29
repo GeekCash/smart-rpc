@@ -8,6 +8,7 @@ node_modules/
 obj/*
 *.bak
 config.js
+test/*
 **/env/production.js
 note.txt
 package-lock.json
