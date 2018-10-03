@@ -32,7 +32,7 @@ function RPCClient(option) {
 
     this.init();
 
-    if (option.listen) {
+    if (option.listen && option.socket) {
         this.listen();
     }
 
