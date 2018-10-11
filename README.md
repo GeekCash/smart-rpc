@@ -119,6 +119,9 @@ var client = SmartRPC.create(option);
 
 client.on('ready' function(){
     console.log('Daemon is Ready!');
+    client.getBlock('00000000016c2a1085f766c2dd2f84cf654f037396852997e28458230da0093f').then(data => {
+        console.log(data);
+    });
 });
 
 // Returns the hash of the best (tip) block in the longest block chain.
