@@ -117,6 +117,10 @@ var client = SmartRPC.create(option);
 ```
 ```js
 
+client.on('ready' function(){
+    console.log('Daemon is Ready!');
+});
+
 // Returns the hash of the best (tip) block in the longest block chain.
 // Result
 // "hex"      (string) the block hash hex encoded

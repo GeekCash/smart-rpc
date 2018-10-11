@@ -12,6 +12,7 @@ var axios = require('axios'),
 function RPCClient(option) {
 
     EventEmitter.call(this);
+    log.setLevel("info");
     this.opts = option;
     this.id = option.id;
     this.apis = ['abandonTransaction', 'addMultiSigAddress', 'addNode', 'backupWallet', 'clearBanned', 'createMultiSig', 'createRawTransaction', 'debug', 'decodeRawTransaction', 'decodeScript', 'disconnectNode', 'dumpPrivKey', 'dumpWallet', 'encryptWallet', 'estimateFee', 'estimatePriority', 'estimateSmartFee', 'estimateSmartPriority', 'fundRawTransaction', 'generate', 'getAccount', 'getAccountAddress', 'getAddressMempool', 'getAddressUtxos', 'getAddressBalance', 'getAddressDeltas', 'getAddressTxids', 'getAddressesByAccount', 'getAddedNodeInfo', 'getBalance', 'getBestBlockHash', 'getBlock', 'getBlockchainInfo', 'getBlockCount', 'getBlockHashes', 'getBlockHash', 'getBlockHeader', 'getBlockHeaders', 'getBlockTemplate', 'getConnectionCount', 'getChainTips', 'getDifficulty', 'getGenerate', 'getGovernanceInfo', 'getGovernanceInfo', 'getInfo', 'getMemPoolInfo', 'getMiningInfo', 'getNewAddress', 'getNetTotals', 'getNetworkInfo', 'getNetworkHashps', 'getPeerInfo', 'getPoolInfo', 'getRawMemPool', 'getRawChangeAddress', 'getRawTransaction', 'getReceivedByAccount', 'getReceivedByAddress', 'getSpentInfo', 'getSuperBlockBudget', 'getTransaction', 'getTxOut', 'getTxOutProof', 'getTxOutSetInfo', 'getWalletInfo', 'help', 'importAddress', 'instantSendToAddress', 'gobject', 'invalidateBlock', 'importPrivKey', 'importPubKey', 'importElectrumWallet', 'importWallet', 'keyPoolRefill', 'listAccounts', 'listAddressGroupings', 'listBanned', 'listReceivedByAccount', 'listReceivedByAddress', 'listSinceBlock', 'listTransactions', 'listUnspent', 'listLockUnspent', 'lockUnspent', 'masternode', 'masternodeBroadcast', 'masternodeList', 'mnsync', 'move', 'ping', 'prioritiseTransaction', 'privateSend', 'reconsiderBlock', 'resendWalletTransactions', 'sendFrom', 'sendMany', 'sendRawTransaction', 'sendToAddress', 'sentinelPing', 'setAccount', 'setBan', 'setGenerate', 'setTxFee', 'setMockTime', 'spork', 'signMessage', 'signRawTransaction', 'stop', 'submitBlock', 'validateAddress', 'verifyMessage', 'verifyChain', 'verifyTxOutProof', 'voteRaw', 'walletLock', 'walletPassPhrase', 'walletPassphraseChange'];
@@ -27,7 +28,7 @@ function RPCClient(option) {
         return response && response.data ? response.data.result : null;
     }, function (error) {
         // Do something with response error
-        return Promise.reject(error);
+        return Promise.reject(error.response.data);
     });
 
     this.init();
@@ -60,8 +61,33 @@ RPCClient.prototype = {
 
             }
 
+        };
 
-        }
+        this._ready();
+
+    },
+
+    _ready: function () {
+
+        var self = this;
+        log.info('Check %s Daemon Ready', self.id, new Date());
+        this.getBestBlockHash().then((hash) => {
+            self.getBlock(hash).then((data) => {
+                self.emit('ready');
+                log.info('%s Daemon Ready', self.id);
+            }).catch(err => {
+                setTimeout(function () {
+                    self._ready();
+                }, 5000);
+                return;
+            });
+
+        }).catch(err => {
+            setTimeout(function () {
+                self._ready();
+            }, 5000);
+            return;
+        });
 
     },
 

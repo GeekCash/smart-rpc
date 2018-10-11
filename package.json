@@ -1,6 +1,6 @@
 {
-  "name": "smart-rpc",
-  "version": "1.0.6",
+  "name": "@geekcash/smart-rpc",
+  "version": "1.0.7",
   "description": "Block and Transaction Real-Time Broadcasting in JavaScript.",
   "main": "./dist/index.js",
   "scripts": {
