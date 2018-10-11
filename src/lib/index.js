@@ -19,7 +19,7 @@ function RPCClient(option) {
     this.transactions = LRU(5000);
     this.transactionLocks = LRU(5000);
     this.blocks = LRU(50);
-
+    this.retry = 0;
     this.axios = axios.create(option.rpc);
 
     this.axios.interceptors.response.use(function (response) {
@@ -70,6 +70,7 @@ RPCClient.prototype = {
     _ready: function () {
 
         var self = this;
+        self.retry += 1;
         log.info('Check %s Daemon Ready', self.id, new Date());
         this.getBestBlockHash().then((hash) => {
             self.getBlock(hash).then((data) => {
@@ -78,15 +79,15 @@ RPCClient.prototype = {
             }).catch(err => {
                 setTimeout(function () {
                     self._ready();
-                }, 5000);
-                return;
+                }, self.retry * 5000);
+
             });
 
         }).catch(err => {
             setTimeout(function () {
                 self._ready();
-            }, 5000);
-            return;
+            }, self.retry * 5000);
+
         });
 
     },

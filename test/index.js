@@ -52,6 +52,11 @@ var o = [
 
     var client = SmartRPC.create(o[0]);
 
+    client.on('ready', function () {
+        client.getBlock('00000000024a185d44648a60a88857ef736910607b9320776319ee88681dcd31').then(data => {
+            console.log(data);
+        });
+    });
 
 
     //     //var result = await client.getBlockchainInfo();
