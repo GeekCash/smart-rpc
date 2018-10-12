@@ -15,7 +15,8 @@ var o = [
                 username: 'root',
                 password: 'a7c43e2f2b93e8d65cdf4820e4e7de406d4e5ea00af17b653c5045607cd37dc6'
             },
-        }
+        },
+        ready: 1
 
     },
 

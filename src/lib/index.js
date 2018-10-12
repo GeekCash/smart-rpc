@@ -33,6 +33,10 @@ function RPCClient(option) {
 
     this.init();
 
+    if (option.ready) {
+        this.ready();
+    }
+
     if (option.listen && option.socket) {
         this.listen();
     }
@@ -41,6 +45,7 @@ function RPCClient(option) {
 
 
 RPCClient.prototype = {
+
     init: function () {
 
         // var own = this;
@@ -63,11 +68,10 @@ RPCClient.prototype = {
 
         };
 
-        this._ready();
-
     },
 
-    _ready: function () {
+    
+    ready: function () {
 
         var self = this;
         self.retry += 1;
@@ -78,14 +82,14 @@ RPCClient.prototype = {
                 log.info('%s Daemon Ready', self.id);
             }).catch(err => {
                 setTimeout(function () {
-                    self._ready();
+                    self.ready();
                 }, self.retry * 5000);
 
             });
 
         }).catch(err => {
             setTimeout(function () {
-                self._ready();
+                self.ready();
             }, self.retry * 5000);
 
         });
