@@ -3,7 +3,7 @@
 var axios = require('axios'),
     util = require('util'),
     log = require('loglevel'),
-    zmq = require('zmq'),
+    zmq = require('zeromq'),
     LRU = require("lru-cache"),
     Hash = require('mix-hash'),
     EventEmitter = require('events').EventEmitter;
@@ -27,8 +27,9 @@ function RPCClient(option) {
         //console.log(response);
         return response && response.data ? response.data.result : null;
     }, function (error) {
-        // Do something with response error
-        return Promise.reject(error.response.data);
+        // Do something with response error       
+        // console.log(util.inspect(error));
+        return Promise.reject(error && error.response ? error.response.data : error);
     });
 
     this.init();
@@ -70,7 +71,7 @@ RPCClient.prototype = {
 
     },
 
-    
+
     ready: function () {
 
         var self = this;
@@ -102,22 +103,24 @@ RPCClient.prototype = {
         this.socket = zmq.socket('sub');
 
         this.socket.on('connect', function (fd, endPoint) {
-            log.info('ZMQ connected to:', endPoint);
+            self.retry = 0;
+            log.info('%s ZMQ connected to:', self.id, endPoint);
         });
 
         this.socket.on('connect_delay', function (fd, endPoint) {
-            log.warn('ZMQ connection delay:', endPoint);
+            log.warn('%s ZMQ connection delay:', self.id, endPoint);
         });
 
         this.socket.on('disconnect', function (fd, endPoint) {
-            log.warn('ZMQ disconnect:', endPoint);
+            log.warn('%s ZMQ disconnect:', self.id, endPoint);
         });
 
         this.socket.on('monitor_error', function (err) {
+            self.retry += 1;
             log.error('Error in monitoring: %s, will restart monitoring in 5 seconds', err);
             setTimeout(function () {
                 self.socket.monitor(500, 0);
-            }, 5000);
+            }, self.retry * 5000);
         });
 
         // subscribe events 
