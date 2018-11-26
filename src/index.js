@@ -19,12 +19,8 @@ SmartRPC.prototype = {
         this.clients = [];
 
         for (let i = 0; i < options.length; i++) {
-            var o = options[i];
-            if (!o.id) {
-                throw new Error('option.id is required');
-            }
+            var o = options[i];           
             var client = this.create(Object.assign(o, { listen: 1 }));
-
             this.clients.push(client);
         };
 

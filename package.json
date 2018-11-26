@@ -1,6 +1,6 @@
 {
   "name": "smart-rpc",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Block and Transaction Real-Time Broadcasting in JavaScript.",
   "main": "./dist/index.js",
   "scripts": {
